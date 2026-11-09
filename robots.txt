@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://echoairgroup.github.io/CHRIS-STUDIO/sitemap.xml
