@@ -32,6 +32,14 @@
     });
   }
 
+  if (nav && !nav.querySelector('[data-page-link="journey"]')) {
+    const journeyLink = document.createElement("a");
+    journeyLink.href = "journey.html";
+    journeyLink.dataset.pageLink = "journey";
+    journeyLink.textContent = "Journey";
+    nav.insertBefore(journeyLink, nav.querySelector(".nav-cta"));
+  }
+
   const currentPage = document.body.dataset.page;
   document.querySelectorAll("[data-page-link]").forEach((link) => {
     if (link.dataset.pageLink === currentPage) {
