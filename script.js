@@ -8,12 +8,20 @@
     const closeMenu = () => {
       menuButton.setAttribute("aria-expanded", "false");
       nav.classList.remove("open");
+      const label = menuButton.childNodes[0];
+      if (label) label.textContent = "Menu ";
+      const sign = menuButton.querySelector("span");
+      if (sign) sign.textContent = "＋";
     };
 
     menuButton.addEventListener("click", () => {
       const isOpen = menuButton.getAttribute("aria-expanded") === "true";
       menuButton.setAttribute("aria-expanded", String(!isOpen));
       nav.classList.toggle("open", !isOpen);
+      const label = menuButton.childNodes[0];
+      if (label) label.textContent = isOpen ? "Menu " : "Close ";
+      const sign = menuButton.querySelector("span");
+      if (sign) sign.textContent = isOpen ? "＋" : "×";
     });
 
     nav.addEventListener("click", (event) => {
@@ -28,92 +36,56 @@
     });
 
     window.addEventListener("resize", () => {
-      if (window.innerWidth > 700) closeMenu();
+      if (window.innerWidth > 680) closeMenu();
     });
   }
 
-  if (nav && !nav.querySelector('[data-page-link="journey"]')) {
-    const journeyLink = document.createElement("a");
-    journeyLink.href = "journey.html";
-    journeyLink.dataset.pageLink = "journey";
-    journeyLink.textContent = "Journey";
-    nav.insertBefore(journeyLink, nav.querySelector(".nav-cta"));
-  }
-
-  const currentPage = document.body.dataset.page;
+  const page = document.body.dataset.page;
   document.querySelectorAll("[data-page-link]").forEach((link) => {
-    if (link.dataset.pageLink === currentPage) {
-      link.setAttribute("aria-current", "page");
-    } else {
-      link.removeAttribute("aria-current");
-    }
+    if (link.dataset.pageLink === page) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
   });
 
   document.querySelectorAll("[data-year]").forEach((node) => {
     node.textContent = String(new Date().getFullYear());
   });
 
-  const projectGrid = document.querySelector("#project-grid");
-  if (projectGrid) {
-    const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
-    const searchInput = document.querySelector("#project-search");
-    const projectCards = Array.from(projectGrid.querySelectorAll("[data-project-card]"));
-    const emptyState = document.querySelector("#empty-state");
+  const projectList = document.querySelector("#project-list");
+  if (projectList) {
+    const buttons = Array.from(document.querySelectorAll("[data-filter]"));
+    const search = document.querySelector("#project-search");
+    const rows = Array.from(projectList.querySelectorAll("[data-project-row]"));
     const count = document.querySelector("[data-results-count]");
-    let activeFilter = "all";
+    const empty = document.querySelector("#empty-state");
+    let selected = "all";
 
-    const refreshProjects = () => {
-      const query = (searchInput?.value || "").trim().toLocaleLowerCase();
+    const update = () => {
+      const query = (search?.value || "").trim().toLocaleLowerCase();
       let visible = 0;
-
-      projectCards.forEach((card) => {
-        const category = card.dataset.category || "";
-        const searchText = (card.dataset.search || card.textContent).toLocaleLowerCase();
-        const categoryMatch = activeFilter === "all" || category.split(" ").includes(activeFilter);
+      rows.forEach((row) => {
+        const categories = (row.dataset.category || "").split(" ");
+        const categoryMatch = selected === "all" || categories.includes(selected);
+        const searchText = (row.dataset.search || row.textContent).toLocaleLowerCase();
         const searchMatch = !query || searchText.includes(query);
         const show = categoryMatch && searchMatch;
-        card.hidden = !show;
+        row.hidden = !show;
         if (show) visible += 1;
       });
-
-      if (emptyState) emptyState.hidden = visible > 0;
-      if (count) {
-        count.textContent = String(visible).padStart(2, "0") + " / " +
-          String(projectCards.length).padStart(2, "0") + " PROJECTS";
-      }
+      if (count) count.textContent = String(visible).padStart(2, "0") + " / " + String(rows.length).padStart(2, "0") + " PROJECTS";
+      if (empty) empty.hidden = visible !== 0;
     };
 
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        activeFilter = button.dataset.filter || "all";
-        filterButtons.forEach((item) => {
-          const selected = item === button;
-          item.classList.toggle("active", selected);
-          item.setAttribute("aria-pressed", String(selected));
-        });
-        refreshProjects();
+    buttons.forEach((button) => button.addEventListener("click", () => {
+      selected = button.dataset.filter || "all";
+      buttons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
       });
-    });
+      update();
+    }));
 
-    searchInput?.addEventListener("input", refreshProjects);
-    refreshProjects();
-  }
-
-  const revealItems = document.querySelectorAll(".feature-card, .project-card, .website-row, .value-card, .timeline-row");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if ("IntersectionObserver" in window && !reduceMotion) {
-    const observer = new IntersectionObserver((entries, currentObserver) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          currentObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: "0px 0px -24px 0px" });
-
-    revealItems.forEach((item) => {
-      item.classList.add("reveal-item");
-      observer.observe(item);
-    });
+    search?.addEventListener("input", update);
+    update();
   }
 })();
