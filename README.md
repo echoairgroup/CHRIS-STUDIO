@@ -1,47 +1,47 @@
 # CHRIS.STUDIO
 
-A multi-page personal portfolio and project directory for Chris, built as a lightweight static website.
+A personal portfolio and directory of Chris's websites, aviation projects, games and tools.
 
-## Experience
+## Design and experience
 
-- Bold editorial visual identity with a dark, high-contrast palette, lime and aqua accents, custom CSS illustrations and responsive layouts.
-- Studio homepage introducing the work and highlighting selected projects.
-- Website directory separating published destinations from repository-first and full-stack projects.
-- Searchable, filterable project collection with categories and direct source links.
-- About, Journey, Contact and custom 404 pages using the same navigation and design system.
-- Accessible mobile navigation, keyboard support, reduced-motion handling and responsive layouts.
+- Editorial layout with a warm paper background, restrained red accent and straightforward typography.
+- Responsive navigation and clear hierarchy without decorative dashboard graphics or generic card grids.
+- A website directory whose links open published project websites.
+- A searchable and filterable project index.
+- Dedicated explanations for projects that are desktop software or do not have a public website.
+- About, Process, Contact and custom 404 pages.
+- Keyboard-accessible navigation, semantic HTML and reduced-motion support.
 
-## Project collection
+## Collection
 
 The portfolio covers Echo Air Group, HUMANITY, SKYLINE, WebControl, FlyTech / Flightdeck EFB, Flightdeck Academy, Airport Tycoon, AeroDeck, TowerATC, My Life Dashboard, Personal Startpage and early aviation prototypes.
 
-The website descriptions distinguish public site destinations from local-first tools, desktop software, projects requiring a backend, and repositories that are still being developed. A repository link does not imply that every backend or integration is online.
+Public website links are used wherever a web destination is available. Desktop software and local projects link to an explanation within this portfolio instead of a source repository.
 
 ## Stack
 
-Semantic HTML, custom responsive CSS and vanilla JavaScript. No framework or build step is required. Google Fonts are loaded from the Google Fonts CDN with local system fallbacks.
+Semantic HTML, custom responsive CSS and vanilla JavaScript. No framework or build step is required.
 
 ## Pages
 
-- index.html — studio homepage and selected work
-- websites.html — website and browser-project directory
-- projects.html — searchable project collection
-- about.html — the person and interests behind the studio
-- journey.html — the approach and build process
-- contact.html — public project and GitHub links
-- 404.html — branded not-found page
+- index.html — homepage and selected work
+- websites.html — published website directory
+- projects.html — searchable project index
+- project-details.html — notes for desktop and early-stage projects
+- about.html — background and interests
+- journey.html — working process
+- contact.html — navigation to websites and project descriptions
+- 404.html — not-found page
 
 ## Deploy
 
-The workflow in .github/workflows/pages.yml publishes the site when changes are pushed to main.
+The .github/workflows/pages.yml workflow publishes the site when changes are pushed to main.
 
 In repository settings, open Pages and set the build source to GitHub Actions.
 
-Expected website:
+Website:
 https://echoairgroup.github.io/CHRIS-STUDIO/
 
 ## Updating content
 
-Project descriptions and destinations are maintained in projects.html and websites.html. Shared visual styling lives in styles.css; navigation, filtering and small interactions live in script.js.
-
-No pretend visitor counter, fake live-status monitor, or insecure client-side admin panel is included.
+Project descriptions and destination links are maintained in projects.html and websites.html. Shared design rules are in styles.css; navigation and project filtering live in script.js.
